@@ -1,0 +1,8 @@
+{
+  "name": "netlify-login-app",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@netlify/blobs": "^5.0.0"
+  }
+}

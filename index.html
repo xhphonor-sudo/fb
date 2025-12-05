@@ -30,7 +30,7 @@
       font-family: 'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    /* 🔙 BACKGROUND ORIGINAL ALA FACEBOOK */
+    /* BACKGROUND ORIGINAL ALA FACEBOOK */
     body {
       background: var(--background);
       min-height: 100vh;
@@ -54,7 +54,7 @@
       z-index: 1; /* di atas sakura */
     }
 
-    /* 🔷 LOGO “f” SAJA */
+    /* LOGO “f” SAJA */
 
     .brand-section {
       text-align: center;
@@ -327,41 +327,26 @@
     }
 
     .sakura {
-      position: absolute;
-      width: 14px;
+      position: fixed;
+      top: -10vh;
+      width: 16px;
       height: 18px;
       background: radial-gradient(circle at 30% 30%, #ffeef7 0, #ff9bbd 40%, #e76a9b 100%);
       border-radius: 60% 40% 60% 40%;
       opacity: 0.9;
       filter: drop-shadow(0 2px 2px rgba(0,0,0,0.18));
-      animation-name: sakuraFall, sakuraSwing;
-      animation-timing-function: linear, ease-in-out;
-      animation-iteration-count: infinite, infinite;
+      animation: sakuraFall 14s linear infinite;
     }
 
-    /* jatuh ke bawah */
     @keyframes sakuraFall {
       0% {
         transform: translate3d(0, -10vh, 0) rotateZ(0deg);
       }
-      100% {
-        transform: translate3d(0, 110vh, 0) rotateZ(360deg);
-      }
-    }
-
-    /* goyang kanan-kiri sambil muter */
-    @keyframes sakuraSwing {
-      0% {
-        margin-left: 0;
-        transform: translateX(0) rotateY(0deg);
-      }
       50% {
-        margin-left: 20px;
-        transform: translateX(10px) rotateY(180deg);
+        transform: translate3d(20px, 50vh, 0) rotateZ(180deg);
       }
       100% {
-        margin-left: 0;
-        transform: translateX(0) rotateY(360deg);
+        transform: translate3d(-20px, 110vh, 0) rotateZ(360deg);
       }
     }
   </style>
@@ -482,47 +467,42 @@
       // window.location.href = 'beranda.html';
     });
 
-    // 🌸 Generate banyak kelopak sakura
+    // 🌸 Generate kelopak sakura
     const sakuraContainer = document.getElementById('sakuraContainer');
 
     function createSakuraPetal() {
       const petal = document.createElement('div');
       petal.classList.add('sakura');
 
-      // posisi awal random di atas layar
-      const startLeft = Math.random() * 100;      // persen
-      const delay = Math.random() * 10;           // 0 - 10 detik
-      const fallDuration = 10 + Math.random() * 12; // 10 - 22 detik
-      const swingDuration = 4 + Math.random() * 4;  // 4 - 8 detik
-      const sizeScale = 0.8 + Math.random() * 0.9;  // 0.8 - 1.7
+      // posisi horizontal random
+      const startLeft = Math.random() * 100; // persen viewport width
+      const delay = Math.random() * 5;       // 0–5 detik
+      const duration = 10 + Math.random() * 10; // 10–20 detik
+      const sizeScale = 0.7 + Math.random() * 1.3;
 
       petal.style.left = startLeft + 'vw';
-      petal.style.top = '-10vh';
-      petal.style.transformOrigin = 'center center';
-      petal.style.opacity = 0.6 + Math.random() * 0.4;
-
-      petal.style.width = 14 * sizeScale + 'px';
+      petal.style.animationDuration = duration + 's';
+      petal.style.animationDelay = delay + 's';
+      petal.style.width = 16 * sizeScale + 'px';
       petal.style.height = 18 * sizeScale + 'px';
-
-      petal.style.animationDuration = fallDuration + 's, ' + swingDuration + 's';
-      petal.style.animationDelay = delay + 's, ' + (delay / 2) + 's';
+      petal.style.opacity = 0.6 + Math.random() * 0.4;
 
       sakuraContainer.appendChild(petal);
 
-      // hapus setelah lewat layar supaya nggak numpuk
+      // hapus setelah animasi selesai
       setTimeout(() => {
         petal.remove();
-      }, (fallDuration + delay) * 1000);
+      }, (duration + delay) * 1000);
     }
 
-    // buat banyak di awal
-    for (let i = 0; i < 35; i++) {
+    // buat beberapa sakura di awal
+    for (let i = 0; i < 30; i++) {
       setTimeout(createSakuraPetal, i * 200);
     }
 
-    // lalu spawn terus pelan-pelan
+    // spawn terus pelan-pelan
     setInterval(() => {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         createSakuraPetal();
       }
     }, 4000);

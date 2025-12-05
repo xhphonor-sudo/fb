@@ -3,3 +3,6 @@
 
 [kv]
   enabled = true
+
+[blobs]
+  enabled = true

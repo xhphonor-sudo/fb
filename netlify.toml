@@ -1,8 +1,5 @@
 [functions]
   directory = "netlify/functions"
 
-[kv]
-  enabled = true
-
 [blobs]
   enabled = true
